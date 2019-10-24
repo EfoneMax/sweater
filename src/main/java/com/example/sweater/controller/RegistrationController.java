@@ -1,0 +1,43 @@
+package com.example.sweater.controller;
+
+import com.example.sweater.domain.Role;
+import com.example.sweater.domain.User;
+import com.example.sweater.repository.UserRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.Collections;
+import java.util.Map;
+
+@Controller
+public class RegistrationController {
+    private UserRepo userRepo;
+
+    @Autowired
+    RegistrationController(UserRepo userRepo) {
+        this.userRepo = userRepo;
+    }
+
+    @GetMapping("/registration")
+    public String registration(@ModelAttribute("message") String message ) {
+        return "registration";
+    }
+    @PostMapping("/registration")
+    public String addUser(User user, Map<String, Object> model) {
+        User userFromDb = userRepo.findByUsername(user.getUsername());
+
+        if (userFromDb != null) {
+            model.put("message", "User already exists!");
+            return "registraton";
+        }
+
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.USER));
+        userRepo.save(user);
+
+        return "redirect:/login";
+    }
+}
