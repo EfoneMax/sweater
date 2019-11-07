@@ -4,6 +4,7 @@ import com.example.sweater.domain.Message;
 import com.example.sweater.domain.User;
 import com.example.sweater.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Controller
+@EnableAsync
 public class MainController {
     private MessageRepository messageRepo;
 
