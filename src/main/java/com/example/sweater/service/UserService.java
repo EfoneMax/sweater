@@ -4,9 +4,11 @@ package com.example.sweater.service;
 import com.example.sweater.domain.Role;
 import com.example.sweater.domain.User;
 import com.example.sweater.repository.UserRepo;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -17,6 +19,7 @@ import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
     private UserRepo userRepo;
     private MailSender mailSender;
 
@@ -25,9 +28,16 @@ public class UserService implements UserDetailsService {
         this.mailSender = mailSender;
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepo.findByUsername(username);
+        User user = userRepo.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found!");
+        }
+
+        return user;
     }
 
     public boolean addUser(User user) {
