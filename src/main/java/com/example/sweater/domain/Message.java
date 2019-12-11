@@ -2,6 +2,7 @@ package com.example.sweater.domain;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,5 +42,16 @@ public class Message {
         this.text = text;
         this.tag = tag;
         this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", tag='" + tag + '\'' +
+                ", filename='" + filename + '\'' +
+                ", author=" + author +
+                '}';
     }
 }
